@@ -66,14 +66,14 @@ def generate_root_index(root_path):
 
 if __name__ == "__main__":
     root_dir = "../"
-    tech_folders = ["python", "javascript", "dotnet"]  # liste des dossiers tech
+    tech_folders = ["Python", "Javascript", "Dotnet","Docker","Git"]  # liste des dossiers tech
 
     # Générer les index dans chaque dossier tech
     for folder in tech_folders:
         folder_path = Path(root_dir) / folder
         if folder_path.exists() and folder_path.is_dir():
             generate_index(folder_path)
-        else:
-            print(f"Attention : le dossier {folder_path} n'existe pas ou n'est pas un dossier.")
+        
     # Générer l'index racine
     generate_root_index(root_dir)
+

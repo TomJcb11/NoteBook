@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>creating_docker_image</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  <!-- Thème Prism.js (Light) -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" /> -->
+  <!-- Thème Prism.js (Dark) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" />
+</head>
+<body>
+<h1>creating_docker_image</h1>
+
+<h2>Creating Docker Images</h2>
+<pre><code class="language-bash">docker images
+REPOSITORY                TAG       IMAGE ID       CREATED         SIZE
+busybox                   latest    6d3e4188a38a   10 months ago   4.28MB
+prakhar1989/static-site   latest    f01030e1dcf3   9 years ago     134MB
+</code></pre>
+<ul>
+<li>Repository : image source</li>
+<li>TAG:  snapshot version of the image</li>
+<li>ID : unique identifiers</li>
+</ul>
+<p>Docker hub semantic</p>
+<table>
+<thead>
+<tr>
+<th>Official images</th>
+<th>User-made Images</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>python</td>
+<td>user/....</td>
+</tr>
+<tr>
+<td>busybox</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Making a Docker Image</h3>
+<blockquote>
+<p>Our goal in this section will be to create an image that sandboxes a simple <a href="http://flask.pocoo.org/">Flask</a> application. For the purposes of this workshop, I've already created a fun little <a href="https://github.com/prakhar1989/docker-curriculum/tree/master/flask-app">Flask app</a> that displays a random cat <code>.gif</code> every time it is loaded</p>
+</blockquote>
+<pre><code class="language-bash">git clone https://github.com/prakhar1989/docker-curriculum.git
+cd docker-curriculum/flask-app
+</code></pre>
+<p><code>NB: this is a Flask (python server) project</code></p>
+<p>1) Selecting base image with the keyword <code>FROM</code></p>
+<pre><code class="language-yaml">FROM python:3.8
+</code></pre>
+<p>2) Setting a work directory then copying file inside the container</p>
+<pre><code class="language-yaml">WORKDIR /usr/src/app
+
+COPY . .
+</code></pre>
+<p>3) Then install dependencies</p>
+<pre><code class="language-yaml">RUN pip install --no-cache-dir -r requirement.txt
+</code></pre>
+<p>4) Exposing desired port (here 5000 for Flask)</p>
+<pre><code class="language-yaml">EXPOSE 5000
+</code></pre>
+<ol>
+<li>When the container is ready just start the python program</li>
+</ol>
+<pre><code class="language-yaml">CMD [&quot;python&quot;,&quot;./app.py&quot;]
+</code></pre>
+<h3>Building Images</h3>
+<pre><code class="language-bash">docker build -t tomjcb11/catnip .
+</code></pre>
+<p>warning the tutorrial is getting old and you might need to upgrade the requirement .</p>
+<pre><code>docker run -p 8888:5000 tomjcb11/catnip
+</code></pre>
+
+    <!-- Core Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+    <!-- Langages nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-git.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>

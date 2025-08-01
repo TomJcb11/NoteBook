@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>docker_introduction</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  <!-- Thème Prism.js (Light) -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" /> -->
+  <!-- Thème Prism.js (Dark) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" />
+</head>
+<body>
+<h1>docker_introduction</h1>
+
+<h1>Rappel Docker CLI</h1>
+<h2><a href="https://www.w3schools.in/docker/intro">How Docker Works</a></h2>
+<p>Docker uses containerization to run applications in isolated environments. The key components include:</p>
+<ul>
+<li><strong>Docker Engine:</strong> The core service that runs and manages containers.</li>
+<li><strong>Docker Images:</strong> Pre-configured templates containing an application and its dependencies.</li>
+<li><strong>Docker Containers:</strong> Running instances of Docker images that execute the application.</li>
+<li><strong>Docker Hub:</strong> A public repository for sharing and storing Docker images.</li>
+</ul>
+<h2><a href="https://docker-curriculum.com">Playing with Busybox (1)</a></h2>
+<pre><code class="language-bash">docker pull busybox
+</code></pre>
+<p>Like the git command ,docker pull will fetch the busybox image from the Docker registry and save it to our system.
+by using this you can see all the images on your system</p>
+<pre><code class="language-bash">docker images
+</code></pre>
+<p>To start a container you must run it manually</p>
+<pre><code class="language-bash">docker run busybox
+</code></pre>
+<blockquote>
+<p>Wait, nothing happened! Is that a bug? Well, no. Behind the scenes, a lot of stuff happened. When you call <code>run</code>, the Docker client finds the image (busybox in this case), loads up the container and then runs a command in that container. When we run <code>docker run busybox</code>, we didn't provide a command, so the container booted up, ran an empty command and then exited. Well, yeah - kind of a bummer. Let's try something more exciting.(1)</p>
+</blockquote>
+<pre><code class="language-bash">docker run busybox echo &quot;hello from busybox&quot;
+hello from busybox
+</code></pre>
+<blockquote>
+<p>Nice - finally we see some output. In this case, the Docker client dutifully ran the <code>echo</code> command in our busybox container and then exited it. If you've noticed, all of that happened pretty quickly. Imagine booting up a virtual machine, running a command and then killing it. Now you know why they say containers are fast! Ok, now it's time to see the <code>docker ps</code> command. The <code>docker ps</code> command shows you all containers that are currently running.</p>
+</blockquote>
+<pre><code class="language-bash">docker ps 
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+</code></pre>
+<blockquote>
+<p>Since no containers are running, we see a blank line. Let's try a more useful variant: <code>docker ps -a</code></p>
+</blockquote>
+<pre><code class="language-bash">docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS                     PORTS     NAMES
+c7744da9b9e9   busybox   &quot;sh&quot;      2 minutes ago   Exited (0) 2 minutes ago             charming_einstein
+</code></pre>
+<blockquote>
+<p>So what we see above is a list of all containers that we ran. Do notice that the <code>STATUS</code> column shows that these containers exited a few minutes ago.</p>
+<p>You're probably wondering if there is a way to run more than just one command in a container. Let's try that now:</p>
+</blockquote>
+<pre><code class="language-bash">docker run -it busybox sh
+/ # ls
+bin    dev    etc    home   lib    lib64  proc   root   sys    tmp    usr    var
+/ # uptime
+ 12:12:17 up 24 min,  0 users,  load average: 0.34, 0.42, 0.38
+/ # 
+</code></pre>
+<p>Running the <code>run</code> command with the <code>-it</code> flags attaches us to an interactive tty in the container. Now we can run as many commands in the container as we want.</p>
+<blockquote>
+<p><strong>Danger Zone</strong> : If you're feeling particularly adventurous you can try <code>rm -rf bin</code> in the container. Make sure you run this command in the container and <strong>not</strong> in your laptop/desktop. Doing this will make any other commands like <code>ls</code>, <code>uptime</code> not work. Once everything stops working, you can exit the container (type <code>exit</code> and press Enter) and then start it up again with the <code>docker run -it busybox sh</code> command. Since Docker creates a new container every time, everything should start working again.</p>
+</blockquote>
+<p>Because every time you run from image you create a brand new container, disk space is slithly reduced every time. In order to  keep your disk clean. be sure to remove container when youre finished with them.</p>
+<pre><code> docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS                      PORTS     NAMES
+2ebd72dce187   busybox   &quot;sh&quot;      2 minutes ago    Exited (0) 29 seconds ago             strange_agnesi
+c7744da9b9e9   busybox   &quot;sh&quot;      10 minutes ago   Exited (0) 10 minutes ago             charming_einstein
+docker rm 2ebd72dce187 c7744da9b9e9
+</code></pre>
+<p>tips:</p>
+<ul>
+<li>When declaring a container you may run the following command, to ensure the deletion of the container when exited.</li>
+</ul>
+<pre><code class="language-bash">docker run ContainerName --rm
+</code></pre>
+<ul>
+<li>Works the same for the unused images</li>
+</ul>
+<pre><code class="language-bash">docker rmi
+</code></pre>
+<h2>Running a static site</h2>
+<p>source: <a href="https://docker-curriculum.com/#:~:text=applications%20with%20Docker!-,Static,-Sites">source website</a></p>
+<p>It is possible to download and run simultanously a container</p>
+<pre><code class="language-bash">docker run --rm -it prakhar1989/static-site
+</code></pre>
+<p>Since the image doesn't exist locally, the client will first fetch the image from the registry and then run the image. If all goes well, you should see a <code>Nginx is running...</code> message in your terminal. Okay now that the server is running, how to see the website? What port is it running on? And more importantly, how do we access the container directly from our host machine? Hit Ctrl+C to stop the container.</p>
+<p>Well, in this case, the client is not exposing any ports so we need to re-run the <code>docker run</code> command to publish ports. While we're at it, we should also find a way so that our terminal is not attached to the running container. This way, you can happily close your terminal and keep the container running. This is called <strong>detached</strong> mode.</p>
+<pre><code class="language-bash">docker run -d -P --name static-site prakhar1989/static-site
+</code></pre>
+<ul>
+<li>-d : detached</li>
+<li>-P: publish all exposed ports to random ports</li>
+<li>-p: manually assign input:ouput port ( 8888:80 by example)</li>
+<li>--name: assign a name to the container</li>
+</ul>
+<p>Now we can see the ports by running the docker port container</p>
+<pre><code class="language-bash">docker port static-site
+80/tcp -&gt; 0.0.0.0:32768
+80/tcp -&gt; [::]:32768
+443/tcp -&gt; 0.0.0.0:32769
+443/tcp -&gt; [::]:32769
+</code></pre>
+<p>so here we can try <a href="http://localhost:32768">http://localhost:32768</a></p>
+
+    <!-- Core Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+    <!-- Langages nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-git.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>
