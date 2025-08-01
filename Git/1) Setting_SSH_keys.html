@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1) Setting_SSH_keys</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  <!-- Thème Prism.js (Light) -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" /> -->
+  <!-- Thème Prism.js (Dark) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" />
+</head>
+<body>
+<h1>1) Setting_SSH_keys</h1>
+
+<h1>Setting SSH keys to github authentication</h1>
+<p>Since HTTPS now requires using PAT (Personnal Access Token) to write on the repositories.
+I've decided to change my github authentication method to SSH keys.</p>
+<p>First i tried it on my old laptop (McBook Pro 2019) because it is a Unix system so pretty close to others linux systems.</p>
+<h2>Creating a pair of keys</h2>
+<p>1) Open terminal and enter the keygen command</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot;
+</code></pre>
+<blockquote>
+<p>If you are using a legacy system that doesn't support the Ed25519 algorithm, use:</p>
+<p><code>bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"</code></p>
+</blockquote>
+<p>using passphrase isn't mandatory but it should be better ( idk actually ) .</p>
+<p>2) Add your SSH private key to the ssh-agent.</p>
+<pre><code class="language-bash">ssh-add ~/.ssh/id_ed25519
+</code></pre>
+<p>3) Add the SSH public key to your account on GitHub.
+   go to <a href="https://github.com/">Github.com</a> -&gt; Settings -&gt; SSH &amp; GPG Keys -&gt; Enter 'New SSH Key -&gt; Choose a name (only for you to remember wich "computer has the private key" -&gt; enter key and you are done .</p>
+<h2>Cloning repositories using ssh instead of HTTPS</h2>
+<p>I had never used ssh for Github. So this might seems obvious:</p>
+<p>1) Go to <a href="https://github.com/">Github.com</a>
+2) Choose whatever project you want .
+3) Then clone and copy the SSH generated sentence
+4) Open your local terminal or explorer and locate yourself where you want the repo to be .
+5) Then introduce the following with the URL you previously copy on Github</p>
+<p><code>bash
+   git clone {URL}</code></p>
+<p><code>bash
+   git clone git@github.com:{username}/{project name}.git</code></p>
+<h2>Sources</h2>
+<ul>
+<li><a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository">cloning repo using ssh</a></li>
+<li><a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">enabling ssh auth</a></li>
+</ul>
+
+    <!-- Core Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+    <!-- Langages nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-git.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>
