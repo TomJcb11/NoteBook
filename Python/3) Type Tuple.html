@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_tuple</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  <!-- Thème Prism.js (Light) -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" /> -->
+  <!-- Thème Prism.js (Dark) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" />
+</head>
+<body>
+<h1>python_tuple</h1>
+
+<h1>What is Immutable in Tuples?</h1>
+<p>Unlike Python lists, tuples are immutable. Some Characteristics of Tuples in Python.
+Like Lists, tuples are ordered and we can access their elements using their index values.</p>
+<p>But:</p>
+<p>We cannot update items to a tuple once it is created. Tuples cannot be appended or extended.We cannot remove items from a tuple once it is created.</p>
+<p>So basicly what appends when you try to add more element inside of a tuple</p>
+<pre><code class="language-python">tuple1= (1,2,3)
+tuple2= (4,5,6)
+print(f'the tuple1 is located at {id(tuple1)} and has value of {tuple1})')
+tuple1+=tuple2
+print(f'the tuple1 is located at {id(tuple1)} and has value of {tuple1})')
+tuple1+=(7,8,9)
+print(f'the tuple1 is located at {id(tuple1)} and has value of {tuple1})')
+</code></pre>
+<p>we can see that each time we update <code>tuple1</code> ,because a tuple is immutable you cannot directly update its value, python create a new tuple and reaffect the variable <code>tuple1</code> on it. but each time the id change</p>
+<pre><code class="language-bash">the tuple1 is located at 132873796386112 and has value of (1,2,3)
+the tuple1 is located at 132873781472192 and has value of (1,2,3,4,5,6)
+the tuple1 is located at 132873781493440 and has value of (1,2,3,4,5,6,7,8,9)
+the tuple1 is located at 132873782588608 and has value of (1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9)
+</code></pre>
+<h2>Updating Tuple Values</h2>
+<p>As explained above, we can't exactly update value of a tuple, in fact we recreate another objet of type tuple and the variable is now pointing to the new object. and the old one (no more used) go to the garbage collector.</p>
+<h2>Unpack python tuple *args</h2>
+<h3>Static Positionnal only</h3>
+<pre><code class="language-python">fruits = ('apple','banana','cherry')
+(x, y, z) = fruits
+print(y) #type str
+</code></pre>
+<h3>Dynamic Positionnal (x,*args)</h3>
+<pre><code class="language-python">fruits = ('apple','banana','cherry')
+(x,*y) = fruits
+print(y) #type list
+</code></pre>
+<h3>Another Dynamic Positionnal only (x,*args,y)</h3>
+<pre><code class="language-python">fruits = ('apple','banana','cherry','mango')
+(x,*y, z) = fruits
+print(y) #type list
+</code></pre>
+
+    <!-- Core Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+    <!-- Langages nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-git.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>

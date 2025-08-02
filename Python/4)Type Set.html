@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_set</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  <!-- Thème Prism.js (Light) -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" /> -->
+  <!-- Thème Prism.js (Dark) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" />
+</head>
+<body>
+<h1>python_set</h1>
+
+<p>Here we can see how to initiate a Python set.</p>
+<p>the id stays the same wich means the python set is mutable (you can update the value of the same object without making a new object)</p>
+<pre><code class="language-python">myset = {'apple','banana','cherry'}
+print(f'the myset is located at {id(myset)} and has value of {myset})')
+myset.remove('banana')  # remove 'banana' from the set
+print(f'the myset is located at {id(myset)} and has value of {myset})')
+myset.add('orange')  # add 'orange' to the set
+print(f'the myset is located at {id(myset)} and has value of {myset})')
+myset.add('orange')  # adding 'orange' again has no effect since sets do not allow duplicates
+print(f'the myset is located at {id(myset)} and has value of {myset})')
+</code></pre>
+<p>output:</p>
+<pre><code class="language-bash">the myset is located at 132873786581824 and has value of {'apple','cherry','banana'})
+the myset is located at 132873786581824 and has value of {'apple','cherry'})
+the myset is located at 132873786581824 and has value of {'apple','cherry','orange'})
+the myset is located at 132873786581824 and has value of {'apple','cherry','orange'})
+</code></pre>
+<h2>adding elements to set</h2>
+<pre><code class="language-python">myset.add(single item :int/str/float)
+myset.update(multiple  item :list/tuple/set)
+</code></pre>
+<h2>removing elements from set</h2>
+<pre><code class="language-python">myset.remove(value) #will raise an exeption if the key isnt found
+myset.discard(value) #will erase the value if found nothing else 
+myset.clear() #will purge every value of the set
+del myset #will delete the set
+</code></pre>
+
+    <!-- Core Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+    <!-- Langages nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-git.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>
