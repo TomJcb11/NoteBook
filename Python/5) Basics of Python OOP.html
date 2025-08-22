@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OOP</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  <!-- Thème Prism.js (Light) -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" /> -->
+  <!-- Thème Prism.js (Dark) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" />
+</head>
+<body>
+<h1>Python Class</h1>
+<p>python oop can be pretty complex, so here is a breakdown. </p>
+<h2>What is oop in python ?</h2>
+<p>In Python OOP driven development consist of creating new <code>Types</code> that have <code>custom properties called attributes</code> and <code>functions called methods</code>.
+note that we call <code>Class</code> the Blueprint and <code>instance</code> the proper called object.</p>
+<h2>Creating a new type in python</h2>
+<pre><code class="language-python">class ListeH(list):
+    def __init__(self,*args,datatype=str):
+        liste=[]
+        for x in args:
+            try: liste.append(datatype(x))
+            except:
+                p=&quot;Impossible de convertir items avec {}&quot;
+                ch=p.format(datatype.__name__)
+                raise TypeError(ch)
+        super().__init__(liste)
+        self.datatype = datatype
+</code></pre>
+<p>Here is a simple but yet complete definition of a Class in Python:</p>
+<ul>
+<li>keyword to create a Class =&gt; <code>class</code></li>
+<li>inheritance from the <code>list</code> type that already exist, which means that our new type is a more specific version of an already existing one. Furthermore the child class can inherit of all the attributes and methods of her mother, she can also <code>Overload</code> these methods if needed (like <code>__init__()</code>, inherited from the <code>Object</code> type)</li>
+<li>usage of special arguments such as :</li>
+<li><strong>self</strong> (pass the instance id in the method)</li>
+<li>positional arguments (<strong>*args</strong>)</li>
+<li>keyword arguments (<strong>datatype</strong> =...)</li>
+<li>Usage of <code>super().__init__(iterable)</code> if we want to create a list, we need an iterable to turns into list. Here we want the mother class <code>list</code> to initialise a list with the value passed in the signature.</li>
+</ul>
+<h2>Differents methods type</h2>
+<p>In OOP, by simplicity we'll call functions methods (actually there is a difference between class functions and instance methods)</p>
+<h3>instance method</h3>
+<pre><code class="language-python">class Person:
+    def __init__(self, name):
+        self.name = name
+
+    # Instance method (pas de décorateur nécessaire)
+    def greet(self):
+        return f&quot;Hello, I am {self.name}&quot;
+
+p = Person(&quot;Alice&quot;)
+print(p.greet())  # Python appelle en réalité Person.greet(p)
+</code></pre>
+<p>Here is the most basic form of a method. A definition of a function inside the class where the first argument is self (the current instance).</p>
+<p>Kind of tips: </p>
+<pre><code>    The Data is contained inside the Instance.
+</code></pre>
+<h3>@classmethod</h3>
+<pre><code class="language-python">class Person:
+    population = 0  # attribut de classe
+
+    def __init__(self, name):
+        self.name = name
+        Person.population += 1
+
+    @classmethod
+    def how_many(cls):
+        return f&quot;There are {cls.population} persons created.&quot;
+</code></pre>
+<p>Note that here we use the <code>@</code> which serve as a decorator, by mentionning <strong>@classmethod</strong> python will understand the difference.</p>
+<p>The mainly difference with instances method is that the first argument isn't <strong>self</strong> anymore but <strong>cls</strong>. (Actually these are only convention the name doesn't matter). The thing is here we won't pass the instance but the class herself inside the method.</p>
+<p>Kind of tips:</p>
+<pre><code>    The Data is known by the Class only
+</code></pre>
+<h3>@staticmethod</h3>
+<pre><code class="language-python">class MathUtils:
+    @staticmethod
+    def add(x, y):
+        return x + y
+
+    @staticmethod
+    def is_even(n):
+        return n % 2 == 0
+</code></pre>
+<p>Here for the third variant note that we don't pass any instance or classes.</p>
+<p>Kind of tips: </p>
+<pre><code>    We don't need any class or instance information to do the job
+</code></pre>
+<h3>Recap using license plate system</h3>
+<p>The subtilities can be tricky at first so let put them all in a single class called License</p>
+<pre><code class="language-python">class License:
+    count=0
+    def __init__(self,car,serial_number=None,):
+        self.serial_number=serial_number
+        self.car=car
+        License.count+=1
+
+    @classmethod
+    def pate_count(cls):
+        return cls.count
+
+    #&quot;@instancemethod&quot; 
+    def get_car(self):
+        return self.car
+
+    @staticmethod
+    def validate_serial(serial):
+        return serial.isalnum() and len(serial) == 6
+</code></pre>
+<pre><code>    - Use classmethod when you need class data
+    - Use static for extra/outer method that don't need cls or self
+    - Use default instance method else
+</code></pre>
+<h3>What's about abstractmethod ?</h3>
+<p>Imagine that you create your own class Animal to describe the way they move, how would you do it, knowing that some fly, other crawl or swim and so more ? </p>
+<p>A very static enum system ? Probalby not, here is another way using @abstractmethod</p>
+<p>First we need a Animal class.</p>
+<p><em>Note that python won't allow to instantiate a class containing and abstract undefined method</em></p>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+class Animal(ABC):
+    #dont define __init__()
+    @abstractmethod
+    def move(self):
+        pass 
+</code></pre>
+<p>Let's first explain what an abstract class is: </p>
+<pre><code>An abstract class isn't designed to be instantiate,instead it is exactly the opposite.
+We don't want it uncomplete so every children will have to define the blank. 
+There is where the @abstractmethod is very usefull.
+</code></pre>
+<p>It says , here is a method that u can use just make it fit your case instead of redefining another method.</p>
+<pre><code class="language-python">class Bird(Animal):
+    def move(self):
+        return ('Using wings to fly')
+
+class Fish(Animal):
+    def move(self):
+        return ('Using fin to swim')
+
+class Human(Animal):
+    def move(self):
+        return ('Using legs to walk')
+</code></pre>
+<p>These three classes are valid and properly defining the abstract method move() this is called polymorphism as the same method behave differently with every Animal child.</p>
+<h2>Encapsulation</h2>
+<p>Imagine building an API, or else involving that you don't want to expose the class/instance properties outside, you can use what is called <strong>encapsulation</strong> .</p>
+<pre><code class="language-python">class PrivateApi:
+    def __init__(self,http_verb=None,message=None):
+        self.__http_verb=http_verb #private double underscore
+        self._message=message  #protected single underscore
+
+    @proprety
+    def http_verb(self):
+        return self.__http_verb
+    @http_verb.setter
+    def http_verb(self,value):  #Builtin Logic
+      if value in [&quot;red,blue,green&quot;]:
+        raise ValueError
+      else:
+        self.__http_verb=value
+</code></pre>
+<p>Imagine that you create an API where you don't want other people to mess with your class, so you set encapsulation to say </p>
+<ul>
+<li>arg =&gt; public =&gt; available</li>
+<li>_arg =&gt; protected =&gt; i have a method to get/set this</li>
+<li>__arg =&gt; private =&gt; you are not suppose to use this </li>
+</ul>
+<p><em>Python use name mangling for private propreties so __arg will become _ClassName__arg, and that is why you can't access directly by using class.__arg, because it just doesn't exist like this, note that using mangled name will works.</em></p>
+
+    <!-- Core Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+    <!-- Langages nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-git.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>
