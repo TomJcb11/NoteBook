@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>regex</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  <!-- Thème Prism.js (Light) -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" /> -->
+  <!-- Thème Prism.js (Dark) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<h1>Regular Expression in python</h1>
+<p>regular expression (regex) are very popular in python to detect,match some pattern</p>
+<p>the python <code>re</code> package provide all the method</p>
+<h2>Methods</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Param1</th>
+<th>Param2</th>
+<th>Param3</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>re.match</td>
+<td>pattern</td>
+<td>source</td>
+<td>N/A</td>
+<td>is pattern at beginning of source ?</td>
+</tr>
+<tr>
+<td>re.search</td>
+<td>pattern</td>
+<td>source</td>
+<td>N/A</td>
+<td>is pattern in source ?</td>
+</tr>
+<tr>
+<td>re.findall</td>
+<td>pattern</td>
+<td>source</td>
+<td>N/A</td>
+<td>return a list of every match</td>
+</tr>
+<tr>
+<td>re.sub</td>
+<td>pattern</td>
+<td>repl</td>
+<td>string</td>
+<td>Replace every occurence by repl in source</td>
+</tr>
+<tr>
+<td>re.split</td>
+<td>pattern</td>
+<td>source</td>
+<td>N/A</td>
+<td>cut the source on every pattern</td>
+</tr>
+</tbody>
+</table>
+<h2>Symboles</h2>
+<table>
+<thead>
+<tr>
+<th>Symbole</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>every character except new_line</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>decimal (0-9)</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>non decimal</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>word (character,letter, underscore [a-zA-Z0-9_]</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>non-word</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>space,tab,new_line</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>everything except space</td>
+</tr>
+</tbody>
+</table>
+<h2>Quantificators</h2>
+<table>
+<thead>
+<tr>
+<th>Symbole</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>zéro ou plusieurs répétitions</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>une ou plusieurs répétitions</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>zéro ou une répétition</td>
+</tr>
+<tr>
+<td><code>{n}</code></td>
+<td>exactement n fois</td>
+</tr>
+<tr>
+<td><code>{n,}</code></td>
+<td>n fois ou plus</td>
+</tr>
+<tr>
+<td><code>{n,m}</code></td>
+<td>entre n et m fois</td>
+</tr>
+</tbody>
+</table>
+<h2>Anchor and group</h2>
+<table>
+<thead>
+<tr>
+<th>Symbole</th>
+<th>Signification</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^</code></td>
+<td>beginning of the string</td>
+<td><code>^abc</code> → match "abc" at start</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>end of the string</td>
+<td><code>abc$</code> → match "abc" at end</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>word boundary</td>
+<td><code>\bcat\b</code> → match "cat" alone</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>not a word boundary</td>
+<td><code>\Bcat\B</code> → match "cat" inside a word</td>
+</tr>
+<tr>
+<td><code>( … )</code></td>
+<td>capturing group</td>
+<td><code>(ab)+</code> → capture "ab" repeated</td>
+</tr>
+<tr>
+<td><code>(?: … )</code></td>
+<td>non-capturing group</td>
+<td><code>(?:ab)+</code> → group without capturing</td>
+</tr>
+<tr>
+<td><code>pipe</code></td>
+<td>OR / alternatives</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>Importance of raw string</h2>
+<p>In python we use '\' in string like : 
+- \t =&gt; tabulation
+- \n =&gt; new_line
+we don't want this in our pattern matching expression</p>
+<pre><code class="language-python">#witout raw string
+pattern = &quot;\\b\w+@\\w+\\.\\w+\\b&quot;  # il faut doubler les backslashes
+#with raw string
+pattern = r'\b\w+@\w+\.\w+\b'  # plus lisible et simple
+</code></pre>
+<h2>Regex use case</h2>
+<p>there are many use case for regular expression.</p>
+<h3>Counting Occurrences of a pattern in a text</h3>
+<pre><code class="language-python">def count_character(char:str,string:str):
+   return len(re.findall(pattern=char,string=string))
+print(count_character(&quot;b&quot;,&quot;blelblelelelelele&quot;))
+output =&gt; 5
+</code></pre>
+<h3>Checking type inside a string</h3>
+<pre><code class="language-python">def is_text_only(string:str):
+    return not bool(re.search(r'[^a-zA-Z]',string=string))
+text1=&quot;HelloWorld&quot; #=&gt; True
+text2=&quot;HelloWorld2&quot; #=&gt; False
+</code></pre>
+<h3>Validation of e-mails</h3>
+<pre><code class="language-python">def validate_email(string):
+    pattern=r'^[\w]+@[\w.]+\.[a-zA-Z]{2,3}$' #&quot;username@domain.com&quot;:True
+    strict_pattern=r'^[a-zA-Z0-9]+\.?[a-zA-Z0-9]+@[a-zA-Z]+(\.[a-zA-Z]+)*\.[a-zA-Z]{2,10}$' # a more strict version of the pattern
+    return bool(re.match(pattern=strict_pattern,string=string))
+
+dict_email={
+    &quot;thomas@hotmail.com&quot;: True,
+    &quot;uu@gmail..com&quot;:False,
+    &quot;outlook@thomas.com&quot;:True,
+    &quot;username@domain.com&quot;:True,
+    &quot;user123.name456@domain.com&quot;:True,
+    &quot;user1.2@domain.sub.com&quot;:True
+}
+</code></pre>
+
+    <!-- Core Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+    <!-- Langages nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-git.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>
